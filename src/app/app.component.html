@@ -45,68 +45,108 @@
         New Employee
       </div>
       <div class="card-body">
-        <form [formGroup] = "employeeForm">
-       <div class="row">
-          <div class="col-6">
-            <label for="">Name</label>
-            <input type="text"  formControlName="name" class="form-control">
-            <div class="text-danger">
-              @if(employeeForm.controls['name'].touched){
-                @if(employeeForm.controls['name'].errors?.['required']){
-                  <span>Name is Required</span>
-                }
-              }
+        <form [formGroup]="employeeForm">
+          <div class="row">
+            <!-- Name Field -->
+            <div class="col-6">
+              <label for="name">Name</label>
+              <input type="text" formControlName="name" class="form-control" />
+              <!-- Validation Message -->
+              <div class="text-danger" *ngIf="employeeForm.controls['name'].touched && employeeForm.controls['name'].invalid">
+                <span *ngIf="employeeForm.controls['name'].errors?.['required']">Name is required</span>
+              </div>
             </div>
-          </div> 
-          <div class="col-6">
-            <label for="">Email-Id</label>
-            <input type="text" formControlName="emailId" class="form-control">
-          </div>
-          <div class="col-6">
-            <label for="">Contact No</label>
-            <input type="text" formControlName="contactNo" class="form-control">
-          </div>
-          <div class="col-6">
-            <label for="">City</label>
-            <input type="text" formControlName="city" class="form-control">
-          </div>
-          <div class="col-6">
-            <label for="">State</label>
-            <input type="text" formControlName="state" class="form-control">
-          </div>
-          <div class="col-6">
-            <label for="">Pin Code</label>
-            <input type="text" formControlName="pinCode" class="form-control">
-            <div class="text-danger"></div>
-              @if(employeeForm.controls['name'].touched){
-                @if(employeeForm.controls['pinCode'].errors?.['required']){
-                  <span>PinCode is Required</span>
-                }
-                @if(employeeForm.controls['pinCode'].errors?.['minlength']){
-                  <span>Min 6 Char Required</span>
-                }
-              }
+        
+            <!-- Email Field -->
+            <div class="col-6">
+              <label for="emailId">Email-Id</label>
+              <input type="text" formControlName="emailId" class="form-control" />
+              <!-- Validation Message -->
+              <div class="text-danger" *ngIf="employeeForm.controls['emailId'].touched && employeeForm.controls['emailId'].invalid">
+                <span *ngIf="employeeForm.controls['emailId'].errors?.['required']">Email is required</span>
+                <span *ngIf="employeeForm.controls['emailId'].errors?.['email']">Invalid email format</span>
+              </div>
             </div>
-          
-           <div class="col-12">
-            <label> Address </label>
-            <textarea formControlName="address" class="form-control"></textarea>
-          </div>
-          <div class="row pt-2">
-            <div class="col-6 text-center">
-              <button class="btn btn-secondary">Reset</button>
+        
+            <!-- Contact No Field -->
+            <div class="col-6">
+              <label for="contactNo">Contact No</label>
+              <input type="text" formControlName="contactNo" class="form-control" />
+              <!-- Validation Message -->
+              <div class="text-danger" *ngIf="employeeForm.controls['contactNo'].touched && employeeForm.controls['contactNo'].invalid">
+                <span *ngIf="employeeForm.controls['contactNo'].errors?.['required']">Contact No is required</span>
+                <span *ngIf="employeeForm.controls['contactNo'].errors?.['pattern']">Invalid Contact No</span>
+              </div>
             </div>
-            <div class="col-6 text-center">
-              @if(employeeForm.controls['empId'].value == '0'){
-                <button class="btn btn-success"  (click)="onSave()">Save Employee</button>
-    
-              }@else{
-              <button class="btn btn-success" (click)="onUpdate()">Update Employee</button>
-              }
+        
+            <!-- City Field -->
+            <div class="col-6">
+              <label for="city">City</label>
+              <input type="text" formControlName="city" class="form-control" />
+              <div class="text-danger" *ngIf="employeeForm.controls['city'].touched && employeeForm.controls['city'].invalid">
+                <span *ngIf="employeeForm.controls['city'].errors?.['required']">CIty is required</span>
+              </div>
+            </div>
+        
+            <!-- State Field -->
+            <div class="col-6">
+              <label for="state">State</label>
+              <input type="text" formControlName="state" class="form-control" />
+              <!-- Validation Message -->
+              <div class="text-danger" *ngIf="employeeForm.controls['state'].touched && employeeForm.controls['state'].invalid">
+                <span *ngIf="employeeForm.controls['state'].errors?.['required']">State is required</span>
+              </div>
+            </div>
+        
+            <!-- Pin Code Field -->
+            <div class="col-6">
+              <label for="pinCode">Pin Code</label>
+              <input type="text" formControlName="pinCode" class="form-control" />
+              <!-- Validation Message -->
+              <div class="text-danger" *ngIf="employeeForm.controls['pinCode'].touched && employeeForm.controls['pinCode'].invalid">
+                <span *ngIf="employeeForm.controls['pinCode'].errors?.['required']">Pin Code is required</span>
+                <span *ngIf="employeeForm.controls['pinCode'].errors?.['minlength']">Min 6 characters required</span>
+                <span *ngIf="employeeForm.controls['pinCode'].errors?.['maxlength']">Max 6 characters allowed</span>
+              </div>
+            </div>
+        
+            <!-- Address Field -->
+            <div class="col-12">
+              <label for="address">Address</label>
+              <textarea formControlName="address" class="form-control"></textarea>
+              <!-- Validation Message -->
+              <div class="text-danger" *ngIf="employeeForm.controls['address'].touched && employeeForm.controls['address'].invalid">
+                <span *ngIf="employeeForm.controls['address'].errors?.['required']">Address is required</span>
+              </div>
+            </div>
+        
+            <!-- Action Buttons -->
+            <div class="row pt-2">
+              <div class="col-6 text-center">
+                <button class="btn btn-secondary" type="button" (click)="resetForm()">Reset</button>
+              </div>
+              <div class="col-6 text-center">
+                <button
+                  class="btn btn-success"
+                  type="button"
+                  *ngIf="!employeeForm.controls['empId'].value || employeeForm.controls['empId'].value  == 0"
+                  (click)="onSave()"
+                >
+                  Save Employee
+                </button>
+                <button
+                  class="btn btn-success"
+                  type="button"
+                  *ngIf="employeeForm.controls['empId'].value && employeeForm.controls['empId'].value !== 0"
+                  (click)="onUpdate()"
+                >
+                  Update Employee
+                </button>
+              </div>
             </div>
           </div>
-          </div>
-      </form>
+        </form>
+        
 
         </div>
       </div>
