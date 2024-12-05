@@ -1,31 +1,52 @@
-import { Component } from '@angular/core';
+import { Component,NgModule  } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EmployeeModel } from './model/Employee';
 import { CommonModule } from '@angular/common';
+import { BehaviorSubject, delay } from 'rxjs';
+import { FormsModule } from '@angular/forms'; // Import FormsModule
+import { ApiIntegrationComponent } from './components/api-integration/api-integration.component';
+// import {Pipe } from '@angular/core';  
+
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ReactiveFormsModule,CommonModule ],
+  imports: [RouterOutlet, ReactiveFormsModule,CommonModule,FormsModule,ApiIntegrationComponent  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
+  name: string = 'name';
   employeeForm: FormGroup = new FormGroup({});
   employeeObj: EmployeeModel = new EmployeeModel();
   employeeList: EmployeeModel[] = [];
+  private countSubject = new BehaviorSubject<number>(0); // Initialize BehaviorSubject with a default value
+  count$ = this.countSubject.asObservable(); // Create an observable from the BehaviorSubject
 
   constructor() {
     this.createForm();
-
     const oldData = localStorage.getItem("EmpData");
     if (oldData != null) {
       const parseData = JSON.parse(oldData);
       this.employeeList = parseData;
+    }  
+  }
+  incrementCount() {
+    delay(1000);
+    let currentValue = this.countSubject.value;
+    this.countSubject.next(currentValue + 1); // Increment the count
+  }
+  startIncrementing() {
+    for (let i = 0; i < 100; i++) {
+      setTimeout(() => {
+        this.incrementCount();
+      }, i * 300); // Delay of 1000ms (1 second) between increments
     }
   }
-
+  
+  
   createForm() {
     this.employeeForm = new FormGroup({
       empId: new FormControl(this.employeeObj.empId),
@@ -34,7 +55,7 @@ export class AppComponent {
       address: new FormControl(this.employeeObj.address, [Validators.required]),
       contactNo: new FormControl(this.employeeObj.contactNo, [
         Validators.required,
-        Validators.pattern(/^[0-9]{10}$/) // Ensuring a 10-digit phone number
+        Validators.pattern(/^[0-9]{11}$/) // Ensuring a 10-digit phone number
       ]),
       emailId: new FormControl(this.employeeObj.emailId, [
         Validators.required,
@@ -42,13 +63,13 @@ export class AppComponent {
       ]),
       pinCode: new FormControl(this.employeeObj.pinCode, [
         Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(4)
+        Validators.minLength(6),
+        Validators.maxLength(6)
       ]),
       state: new FormControl(this.employeeObj.state, [Validators.required]),
     });
   }
-
+  
   onSave() {
     debugger;
     if (this.employeeForm.invalid) {

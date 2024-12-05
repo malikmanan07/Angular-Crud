@@ -1,8 +1,11 @@
-<div class="row">
+<!-- <div class="row"> -->
   <div class="col-8">
+
     <div class="card">
       <div class="card-header bg-success text-white">
-      <h6>Employee List</h6>
+        <button class="btn btn-success" (click)="startIncrementing()">Increment Count</button>
+        <h6>Employee List ({{ count$ | async }})</h6>
+
       </div>
       <div class="card-body">
         <div class="row">
@@ -21,7 +24,7 @@
                 @for (item of employeeList; track $index){
                   <tr>
                   <td>{{$index + 1}}</td>
-                  <td>{{item.name}}</td>
+                  <td>{{item.name | titlecase}}</td>
                   <td>{{item.contactNo}}</td>
                   <td>{{item.emailId}}</td>
                   <td class="text-center">
@@ -47,39 +50,39 @@
       <div class="card-body">
         <form [formGroup]="employeeForm">
           <div class="row">
-            <!-- Name Field -->
+            
             <div class="col-6">
               <label for="name">Name</label>
               <input type="text" formControlName="name" class="form-control" />
-              <!-- Validation Message -->
+              
               <div class="text-danger" *ngIf="employeeForm.controls['name'].touched && employeeForm.controls['name'].invalid">
                 <span *ngIf="employeeForm.controls['name'].errors?.['required']">Name is required</span>
               </div>
             </div>
         
-            <!-- Email Field -->
+            
             <div class="col-6">
               <label for="emailId">Email-Id</label>
               <input type="text" formControlName="emailId" class="form-control" />
-              <!-- Validation Message -->
+              
               <div class="text-danger" *ngIf="employeeForm.controls['emailId'].touched && employeeForm.controls['emailId'].invalid">
                 <span *ngIf="employeeForm.controls['emailId'].errors?.['required']">Email is required</span>
                 <span *ngIf="employeeForm.controls['emailId'].errors?.['email']">Invalid email format</span>
               </div>
             </div>
         
-            <!-- Contact No Field -->
+            
             <div class="col-6">
               <label for="contactNo">Contact No</label>
               <input type="text" formControlName="contactNo" class="form-control" />
-              <!-- Validation Message -->
+              
               <div class="text-danger" *ngIf="employeeForm.controls['contactNo'].touched && employeeForm.controls['contactNo'].invalid">
                 <span *ngIf="employeeForm.controls['contactNo'].errors?.['required']">Contact No is required</span>
                 <span *ngIf="employeeForm.controls['contactNo'].errors?.['pattern']">Invalid Contact No</span>
               </div>
             </div>
         
-            <!-- City Field -->
+            
             <div class="col-6">
               <label for="city">City</label>
               <input type="text" formControlName="city" class="form-control" />
@@ -88,21 +91,21 @@
               </div>
             </div>
         
-            <!-- State Field -->
+            
             <div class="col-6">
               <label for="state">State</label>
               <input type="text" formControlName="state" class="form-control" />
-              <!-- Validation Message -->
+              
               <div class="text-danger" *ngIf="employeeForm.controls['state'].touched && employeeForm.controls['state'].invalid">
                 <span *ngIf="employeeForm.controls['state'].errors?.['required']">State is required</span>
               </div>
             </div>
         
-            <!-- Pin Code Field -->
+            
             <div class="col-6">
               <label for="pinCode">Pin Code</label>
               <input type="text" formControlName="pinCode" class="form-control" />
-              <!-- Validation Message -->
+              
               <div class="text-danger" *ngIf="employeeForm.controls['pinCode'].touched && employeeForm.controls['pinCode'].invalid">
                 <span *ngIf="employeeForm.controls['pinCode'].errors?.['required']">Pin Code is required</span>
                 <span *ngIf="employeeForm.controls['pinCode'].errors?.['minlength']">Min 6 characters required</span>
@@ -110,17 +113,17 @@
               </div>
             </div>
         
-            <!-- Address Field -->
+            
             <div class="col-12">
               <label for="address">Address</label>
               <textarea formControlName="address" class="form-control"></textarea>
-              <!-- Validation Message -->
+              
               <div class="text-danger" *ngIf="employeeForm.controls['address'].touched && employeeForm.controls['address'].invalid">
                 <span *ngIf="employeeForm.controls['address'].errors?.['required']">Address is required</span>
               </div>
             </div>
         
-            <!-- Action Buttons -->
+            
             <div class="row pt-2">
               <div class="col-6 text-center">
                 <button class="btn btn-secondary" type="button" (click)="resetForm()">Reset</button>
@@ -151,7 +154,14 @@
         </div>
       </div>
     </div>
+
+    <!-- <div class="form-control">
+      <input [(ngModel)]="name" type="search" class="form-control"  >
     </div>
+
+    <textarea >{{name}} </textarea>
+
+    <app-api-integration></app-api-integration> -->
       
       
   
